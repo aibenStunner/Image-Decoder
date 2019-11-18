@@ -24,38 +24,34 @@ public class CleanImage {
         createImage();
     }
 
-    public void clean() {
+   public void clean() {
         try {
             reader = new Scanner(inputFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        int count = 0;
+
         int temp, tempPixel, colCount = 0;
+
         // Decompress picture.txt and save to a decodedPicture.txt
+        temp = reader.nextInt();
+        width = temp;
+        temp = reader.nextInt();
+        height = temp;
         try (PrintStream ps = new PrintStream(outPath)) {
             while (reader.hasNext()) {
                 temp = reader.nextInt();
                 if (temp == -1)
                     break;
-                if (count == 2) {
-                    tempPixel = reader.nextInt();
-                    for (int i = 0; i < temp; i++) {
-                        ps.print(tempPixel + " ");
-                        colCount += 1;
-                        if (colCount == width) {
-                            colCount = 0;
-                            ps.println();
-                        }
+
+                tempPixel = reader.nextInt();
+                for (int i = 0; i < temp; i++) {
+                    ps.print(tempPixel + " ");
+                    colCount += 1;
+                    if (colCount == width) {
+                        colCount = 0;
+                        ps.println();
                     }
-                }
-                if (count == 1) {
-                    height = temp;
-                    count++;
-                }
-                if (count == 0) {
-                    width = temp;
-                    count++;
                 }
             }
             ps.flush();
@@ -63,6 +59,7 @@ public class CleanImage {
             e.printStackTrace();
         }
     }
+
 
     public BufferedImage populateImg(Color[] color) {
         // Create image from decodedPicture.txt
